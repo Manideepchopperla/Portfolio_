@@ -1,5 +1,7 @@
+// src/components/SpaceBackground.tsx
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { shouldUseSimplifiedAnimations } from '../utils/performance';
 
 interface Particle {
   x: number;
@@ -19,11 +21,16 @@ interface Star {
   twinkleSpeed: number;
 }
 
-const SpaceBackground = () => {
+const SpaceBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const starsRef = useRef<Star[]>([]);
   const animationRef = useRef<number>();
+  const lastTimeRef = useRef<number>(0);
+  const frameRateRef = useRef<number>(20); // Reduce to 20 FPS for better performance
+
+  // Determine if we should use simple animations
+  const useSimpleAnimations = shouldUseSimplifiedAnimations();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,47 +39,81 @@ const SpaceBackground = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    // Get safe window dimensions
+    const getWindowWidth = () => typeof window !== 'undefined' ? window.innerWidth : 1024;
+    const getWindowHeight = () => typeof window !== 'undefined' ? window.innerHeight : 768;
+
+    // Optimize for device capabilities
+    const isMobile = getWindowWidth() < 768;
+    const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1;
+    
+    const resizeCanvas = (): void => {
+      if (!canvas || !ctx) return;
+      
+      const width = getWindowWidth();
+      const height = getWindowHeight();
+      
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
     };
 
-    const createParticles = () => {
+    const createParticles = (): void => {
       const particles: Particle[] = [];
-      const particleCount = Math.min(150, Math.floor((canvas.width * canvas.height) / 8000));
+      const width = getWindowWidth();
+      const height = getWindowHeight();
+      
+      // Drastically reduce particle count for better performance
+      const particleCount = Math.min(
+        isMobile ? 8 : 15, 
+        Math.floor((width * height) / 50000)
+      );
       
       for (let i = 0; i < particleCount; i++) {
         particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 2 + 0.5,
-          opacity: Math.random() * 0.8 + 0.2,
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.08, // Even slower movement
+          vy: (Math.random() - 0.5) * 0.08, // Even slower movement
+          size: Math.random() * 1 + 0.5,
+          opacity: Math.random() * 0.3 + 0.2,
           color: ['#3B82F6', '#06B6D4', '#8B5CF6', '#10B981'][Math.floor(Math.random() * 4)]
         });
       }
       particlesRef.current = particles;
     };
 
-    const createStars = () => {
+    const createStars = (): void => {
       const stars: Star[] = [];
-      const starCount = Math.min(200, Math.floor((canvas.width * canvas.height) / 6000));
+      const width = getWindowWidth();
+      const height = getWindowHeight();
+      
+      // Reduce star count
+      const starCount = Math.min(
+        isMobile ? 15 : 30, 
+        Math.floor((width * height) / 30000)
+      );
       
       for (let i = 0; i < starCount; i++) {
         stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 1.5 + 0.5,
-          opacity: Math.random() * 0.8 + 0.2,
-          twinkleSpeed: Math.random() * 0.02 + 0.01
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 0.6 + 0.3,
+          opacity: Math.random() * 0.4 + 0.2,
+          twinkleSpeed: Math.random() * 0.002 + 0.001 // Even slower twinkling
         });
       }
       starsRef.current = stars;
     };
 
-    const drawParticles = (time: number) => {
+    const drawParticles = (time: number): void => {
+      if (!ctx) return;
+      
       const particles = particlesRef.current;
+      const width = getWindowWidth();
+      const height = getWindowHeight();
       
       particles.forEach((particle) => {
         // Update position
@@ -80,45 +121,32 @@ const SpaceBackground = () => {
         particle.y += particle.vy;
 
         // Wrap around edges
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
+        if (particle.x < 0) particle.x = width;
+        if (particle.x > width) particle.x = 0;
+        if (particle.y < 0) particle.y = height;
+        if (particle.y > height) particle.y = 0;
 
-        // Pulsing effect
-        const pulse = Math.sin(time * 0.001 + particle.x * 0.01) * 0.3 + 0.7;
+        // Minimal pulsing effect
+        const pulse = Math.sin(time * 0.0001 + particle.x * 0.0005) * 0.05 + 0.95;
         
-        // Draw particle with glow effect
+        // Draw particle with no glow effect
         ctx.save();
         ctx.globalAlpha = particle.opacity * pulse;
-        
-        // Outer glow
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2);
-        const gradient = ctx.createRadialGradient(
-          particle.x, particle.y, 0,
-          particle.x, particle.y, particle.size * 3
-        );
-        gradient.addColorStop(0, particle.color + '40');
-        gradient.addColorStop(1, particle.color + '00');
-        ctx.fillStyle = gradient;
-        ctx.fill();
-
-        // Inner particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = particle.color;
         ctx.fill();
-        
         ctx.restore();
       });
     };
 
-    const drawStars = (time: number) => {
+    const drawStars = (time: number): void => {
+      if (!ctx) return;
+      
       const stars = starsRef.current;
       
       stars.forEach((star) => {
-        const twinkle = Math.sin(time * star.twinkleSpeed) * 0.5 + 0.5;
+        const twinkle = Math.sin(time * star.twinkleSpeed) * 0.1 + 0.9;
         
         ctx.save();
         ctx.globalAlpha = star.opacity * twinkle;
@@ -130,62 +158,79 @@ const SpaceBackground = () => {
       });
     };
 
-    const drawConnections = () => {
-      const particles = particlesRef.current;
-      const maxDistance = 120;
-      
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          if (distance < maxDistance) {
-            const opacity = (1 - distance / maxDistance) * 0.2;
-            ctx.save();
-            ctx.globalAlpha = opacity;
-            ctx.strokeStyle = '#3B82F6';
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-            ctx.restore();
-          }
-        }
-      }
-    };
+    // No connections for better performance
 
-    const animate = (time: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const animate = (time: number): void => {
+      if (!ctx) return;
+      
+      // Frame rate limiting
+      const elapsed = time - lastTimeRef.current;
+      if (elapsed < 1000 / frameRateRef.current) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastTimeRef.current = time - (elapsed % (1000 / frameRateRef.current));
+      
+      // Safe dimensions
+      const width = getWindowWidth();
+      const height = getWindowHeight();
+      
+      ctx.clearRect(0, 0, width, height);
       
       drawStars(time);
       drawParticles(time);
-      drawConnections();
       
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    resizeCanvas();
-    createStars();
-    createParticles();
-    animate(0);
+    // Handle resize with debounce - use safer timeout method
+    let resizeTimeout: number | undefined;
+    const handleResize = (): void => {
+      if (typeof window !== 'undefined') {
+        if (resizeTimeout) window.clearTimeout(resizeTimeout);
+        resizeTimeout = window.setTimeout(() => {
+          resizeCanvas();
+          createStars();
+          createParticles();
+        }, 300);
+      }
+    };
 
-    const handleResize = () => {
+    // Safer event listener handling
+    const addWindowListener = () => {
+      if (typeof window !== 'undefined') {
+        window.addEventListener('resize', handleResize);
+      }
+    };
+    
+    const removeWindowListener = () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+
+    addWindowListener();
+    
+    // Initialize canvas safely
+    try {
       resizeCanvas();
       createStars();
       createParticles();
-    };
-
-    window.addEventListener('resize', handleResize);
+      animate(0);
+    } catch (err) {
+      console.error('Error initializing canvas animation:', err);
+    }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+      removeWindowListener();
+      if (typeof window !== 'undefined') {
+        if (resizeTimeout) window.clearTimeout(resizeTimeout);
+        if (animationRef.current) {
+          window.cancelAnimationFrame(animationRef.current);
+        }
       }
     };
-  }, []);
+  }, [useSimpleAnimations]);
 
   return (
     <>
@@ -196,101 +241,23 @@ const SpaceBackground = () => {
         style={{ background: 'transparent' }}
       />
       
-      {/* Additional space elements */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        {/* Nebula effects */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
-        />
-        
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.5, 0.2],
-            rotate: [360, 180, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-teal-500/20 rounded-full blur-3xl"
-        />
-
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.1, 0.4, 0.1],
-            rotate: [0, -180, -360],
-          }}
-          transition={{
-            duration: 35,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-cyan-500/15 via-blue-500/15 to-purple-500/15 rounded-full blur-3xl"
-        />
-
-        {/* Shooting stars */}
-        {[...Array(3)].map((_, i) => (
+      {/* Super simplified background elements */}
+      {!useSimpleAnimations && (
+        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
           <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
-            initial={{
-              x: -100,
-              y: Math.random() * window.innerHeight,
-              opacity: 0,
-            }}
             animate={{
-              x: window.innerWidth + 100,
-              y: Math.random() * window.innerHeight,
-              opacity: [0, 1, 0],
+              scale: [1, 1.01, 1],
+              opacity: [0.02, 0.04, 0.02],
             }}
             transition={{
-              duration: 3,
+              duration: 60, // Very slow animation
               repeat: Infinity,
-              delay: i * 8,
-              ease: "linear",
+              ease: "linear"
             }}
-            style={{
-              boxShadow: '0 0 10px #ffffff, 0 0 20px #3B82F6, 0 0 30px #3B82F6',
-            }}
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-cyan-500/5 rounded-full blur-3xl"
           />
-        ))}
-
-        {/* Floating orbs */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-blue-400/60 rounded-full blur-sm"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, -50, 0],
-              opacity: [0.3, 0.8, 0.3],
-            }}
-            transition={{
-              duration: 8 + i * 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 1.5,
-            }}
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + i * 10}%`,
-            }}
-          />
-        ))}
-      </div>
+        </div>
+      )}
     </>
   );
 };

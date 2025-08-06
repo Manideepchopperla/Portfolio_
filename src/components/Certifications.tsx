@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Award, ExternalLink, CheckCircle } from 'lucide-react';
 import { link } from 'framer-motion/client';

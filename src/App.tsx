@@ -1,23 +1,35 @@
-import React, { useEffect } from 'react';
+// src/App.tsx
+import React, { useEffect, lazy, Suspense } from 'react';
 import SpaceBackground from './components/SpaceBackground';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
-import Skills from './components/Skills';
-import Experience from './components/Experience';
-import Projects from './components/Projects';
-import Achievements from './components/Achievements';
-import Certifications from './components/Certifications';
-import Extracurricular from './components/Extracurricular';
-import Contact from './components/Contact';
+
+// Lazy load components that aren't immediately visible
+const About = lazy(() => import('./components/About'));
+const Skills = lazy(() => import('./components/Skills'));
+const Experience = lazy(() => import('./components/Experience'));
+const Projects = lazy(() => import('./components/Projects'));
+const Achievements = lazy(() => import('./components/Achievements'));
+const Certifications = lazy(() => import('./components/Certifications'));
+const Extracurricular = lazy(() => import('./components/Extracurricular'));
+const Contact = lazy(() => import('./components/Contact'));
+
+// Simple loading component
+const LoadingFallback: React.FC = () => (
+  <div className="flex justify-center items-center py-10">
+    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 function App() {
   useEffect(() => {
     // Update document title
     document.title = 'Manideep Chopperla - Full Stack Developer';
     
-    // Add smooth scrolling behavior
-    document.documentElement.style.scrollBehavior = 'smooth';
+    // Add smooth scrolling behavior - only if preferred
+    if (typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.style.scrollBehavior = 'smooth';
+    }
     
     // Clean up on unmount
     return () => {
@@ -38,14 +50,16 @@ function App() {
         <Navbar />
         <main>
           <Hero />
-          <About />
-          <Skills />
-          <Experience />
-          <Projects />
-          <Achievements />
-          <Certifications />
-          <Extracurricular />
-          <Contact />
+          <Suspense fallback={<LoadingFallback />}>
+            <About />
+            <Skills />
+            <Experience />
+            <Projects />
+            <Achievements />
+            <Certifications />
+            <Extracurricular />
+            <Contact />
+          </Suspense>
         </main>
         
         {/* Footer */}
