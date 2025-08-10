@@ -101,7 +101,7 @@ const Hero: React.FC = () => {
               </motion.a>
 
               <motion.a
-                href=""
+                href="https://drive.google.com/file/d/1fg1NLMetD3Z63-TUmlGcdiSMf7Z3oL2d/view?usp=sharing"
                 target="_blank"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

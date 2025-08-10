@@ -7,7 +7,7 @@ const Experience = () => {
     {
       title: 'Full Stack Intern',
       company: 'SmartBridge',
-      period: 'April – June 2025',
+      period: 'May – July 2025',
       type: 'Internship',
       description: 'Built DocSpot, a comprehensive MERN platform for digitized doctor-patient workflows.',
       achievements: [
