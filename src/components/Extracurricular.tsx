@@ -61,7 +61,7 @@ const Extracurricular = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            Extracurricular <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Activities</span>
+            <span className="bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent">Extracurricular Activities</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full mb-6"></div>
           <p className="text-gray-300 text-lg max-w-3xl mx-auto">
@@ -181,7 +181,7 @@ const Extracurricular = () => {
           viewport={{ once: true }}
         >
           <h3 className="text-3xl font-bold text-white text-center mb-12">
-            Key <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Highlights</span>
+            <span className="bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent">Key Highlights</span>
           </h3>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -230,7 +230,7 @@ const Extracurricular = () => {
               href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-700 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
             >
               <Users size={18} />
               Let's Connect

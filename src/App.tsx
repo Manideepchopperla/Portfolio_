@@ -39,13 +39,13 @@ function App() {
 
   return (
     <div className="bg-gray-900 min-h-screen relative overflow-x-hidden">
-      {/* Space Background with Particles */}
+      {/* Space Background with Particles - z-0 */}
       <SpaceBackground />
       
-      {/* Base Background Gradient */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-gray-900 via-blue-900/30 to-purple-900/30"></div>
+      {/* Base Background Gradient - changed to z-[-1] to be behind SpaceBackground */}
+      <div className="fixed inset-0 z-[-1] bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20"></div>
 
-      {/* Content */}
+      {/* Content - z-10 stays above everything */}
       <div className="relative z-10">
         <Navbar />
         <main>

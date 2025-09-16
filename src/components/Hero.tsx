@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
               className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4"
             >
               <span className="text-white">Hi, I'm </span>
-              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent">
                 Manideep
               </span>
             </motion.h1>
@@ -95,7 +95,7 @@ const Hero: React.FC = () => {
                 href="#contact"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+                className="px-8 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-700 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
               >
                 Get In Touch
               </motion.a>
@@ -105,7 +105,7 @@ const Hero: React.FC = () => {
                 target="_blank"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 border-2 border-blue-500 text-blue-400 font-semibold rounded-full hover:bg-blue-500/10 transition-all duration-300 flex items-center gap-2"
+                className="px-8 py-3 border-2 border-cyan-500 text-cyan-400 font-semibold rounded-full hover:bg-cyan-500/10 hover:border-indigo-500 hover:text-indigo-300 transition-all duration-300 flex items-center gap-2"
               >
                 <Eye size={20} />
                 Resume

@@ -1,8 +1,19 @@
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Play} from 'lucide-react';
+import { Atom, ExternalLink, Github, Play} from 'lucide-react';
 
 const Projects = () => {
 const projects = [
+  {
+    title: 'Qubit Odyssey (Quantum State Visualizer)',
+    description: 'Web tool that processes multi-qubit quantum circuits, performs partial tracing to compute single-qubit reduced density matrices, and visualizes each qubit\'s mixed state on the Bloch sphere.',
+    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React', 'Flask', 'Qiskit', 'Python', 'Quantum Computing'],
+    liveLink: 'https://qubit-odyssey.vercel.app/', 
+    githubLink: 'https://github.com/Manideepchopperla/Qubit-Odyssey', 
+    color: 'from-purple-500 to-indigo-600',
+    features: ['Quantum circuit processing', 'Partial tracing algorithms', 'Bloch sphere visualization', 'Purity-based color coding'],
+    icon: Atom
+  },
   {
     title: 'Collaborative Task Manager',
     description: 'Real-time drag-drop task management system built with MERN stack and Socket.IO for seamless team collaboration.',
@@ -82,7 +93,7 @@ const projects = [
           className="text-center mb-16"
         >
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            Featured <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Projects</span>
+            <span className="bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent">Featured Projects</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full mb-6"></div>
           <p className="text-gray-300 text-lg max-w-3xl mx-auto">
@@ -189,7 +200,7 @@ const projects = [
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-700 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
                     >
                       <ExternalLink size={16} />
                       Live Demo
@@ -200,7 +211,7 @@ const projects = [
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-gray-600 text-gray-300 font-semibold rounded-lg hover:border-blue-500 hover:text-blue-400 transition-all duration-300"
+                      className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-gray-600 text-gray-300 font-semibold rounded-lg hover:border-cyan-500 hover:text-cyan-400 hover:bg-cyan-500/10 transition-all duration-300"
                     >
                       <Github size={16} />
                       Code
@@ -226,7 +237,7 @@ const projects = [
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 px-8 py-3 border-2 border-blue-500 text-blue-400 font-semibold rounded-full hover:bg-blue-500/10 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-3 border-2 border-cyan-500 text-cyan-400 font-semibold rounded-full hover:bg-cyan-500/10 hover:border-indigo-500 hover:text-indigo-300 transition-all duration-300"
           >
             <Github size={20} />
             View More Projects

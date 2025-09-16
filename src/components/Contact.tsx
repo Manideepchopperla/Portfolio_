@@ -102,8 +102,8 @@ const Contact: React.FC = () => {
     {
       icon: MapPin,
       title: 'Location',
-      value: 'Srikakulam, India',
-      link: '#',
+      value: 'Tuni, India',
+      link: 'https://maps.app.goo.gl/LGHJ4Uh1ZCrTvE829',
       color: 'from-purple-500 to-pink-500'
     }
   ];
@@ -153,7 +153,7 @@ const Contact: React.FC = () => {
           className="text-center mb-8 sm:mb-12 md:mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
-            Get In <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Touch</span>
+            <span className="bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent">Get in Touch</span>
           </h2>
           <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full mb-4 sm:mb-6"></div>
           <p className="text-gray-300 text-base sm:text-lg max-w-3xl mx-auto">
@@ -235,7 +235,7 @@ const Contact: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 disabled:opacity-70"
+                  className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-700 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
                 >
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
@@ -264,6 +264,7 @@ const Contact: React.FC = () => {
                   <a
                     key={info.title}
                     href={info.link}
+                    target="_blank"
                     className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl hover:bg-gray-700/30 transition-all duration-300 group"
                   >
                     <div className={`p-2 sm:p-3 rounded-lg bg-gradient-to-r ${info.color}`}>

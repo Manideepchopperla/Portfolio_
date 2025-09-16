@@ -1,9 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Award, Target, Star } from 'lucide-react';
+import { Trophy, Award, Target, Star, Medal } from 'lucide-react';
 
 const Achievements = () => {
   const achievements = [
+    {
+      title: 'Quantum Valley Hackathon Semi-Finalist',
+      description: 'Selected as Semi-finalists at the prestigious Andhra Pradesh Quantum Valley Hackathon 2025, competing with innovative quantum computing solutions.',
+      icon: Medal,
+      value: 'Semi-Finalist',
+      color: 'from-indigo-500 to-purple-600',
+      bgColor: 'bg-indigo-500/20',
+      borderColor: 'border-indigo-500/30'
+    },
     {
       title: 'LeetCode Problem Solver',
       description: 'Solved 250+ coding problems on LeetCode, demonstrating strong algorithmic thinking and problem-solving skills.',
@@ -22,15 +31,15 @@ const Achievements = () => {
       bgColor: 'bg-blue-500/20',
       borderColor: 'border-blue-500/30'
     },
-    {
-      title: 'High CGPA',
-      description: 'Maintained excellent academic performance with CGPA of 9.1 in B.Tech and 9.64 in PUC.',
-      icon: Award,
-      value: '9.1',
-      color: 'from-green-500 to-emerald-500',
-      bgColor: 'bg-green-500/20',
-      borderColor: 'border-green-500/30'
-    },
+    // {
+    //   title: 'High CGPA',
+    //   description: 'Maintained excellent academic performance with CGPA of 9.1 in B.Tech and 9.64 in PUC.',
+    //   icon: Award,
+    //   value: '9.1',
+    //   color: 'from-green-500 to-emerald-500',
+    //   bgColor: 'bg-green-500/20',
+    //   borderColor: 'border-green-500/30'
+    // },
     {
       title: 'Production Projects',
       description: 'Successfully built and deployed multiple full-stack applications with real-world impact.',
@@ -53,7 +62,7 @@ const Achievements = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            Key <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Achievements</span>
+            <span className="bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent">Key Achievements</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full mb-6"></div>
           <p className="text-gray-300 text-lg max-w-3xl mx-auto">
@@ -155,7 +164,7 @@ const Achievements = () => {
                 <div className="text-gray-300 text-sm">Current CGPA</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-400 mb-2">3</div>
+                <div className="text-3xl font-bold text-purple-400 mb-2">3+</div>
                 <div className="text-gray-300 text-sm">Major Projects</div>
               </div>
               <div className="text-center">
